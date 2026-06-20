@@ -3,20 +3,22 @@ import logging
 import psycopg2
 from kafka import KafkaConsumer
 
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
 logger = logging.getLogger(__name__)
 
 KAFKA_BROKER = 'localhost:9092'
-TOPIC        = 'sensor-data'
-GROUP_ID     = 'db-consumer-group'
+TOPIC = 'sensor-data'
+GROUP_ID = 'db-consumer-group'
 
 DB_CONFIG = {
-    'host'    : 'localhost',
-    'port'    : 5432,
-    'dbname'  : 'sensors',
-    'user'    : 'admin',
+    'host': 'localhost',
+    'port': 5432,
+    'dbname': 'sensors',
+    'user': 'admin',
     'password': 'admin123'
 }
+
 
 def create_table(conn):
     with conn.cursor() as cur:
@@ -34,6 +36,7 @@ def create_table(conn):
         conn.commit()
     logger.info('Table sensor_readings ready')
 
+
 def insert_reading(conn, reading):
     with conn.cursor() as cur:
         cur.execute("""
@@ -49,6 +52,7 @@ def insert_reading(conn, reading):
             reading['timestamp']
         ))
         conn.commit()
+
 
 def main():
     logger.info('Connecting to PostgreSQL...')
@@ -70,12 +74,12 @@ def main():
         insert_reading(conn, reading)
         status = 'ANOMALY' if reading['anomaly'] else 'OK'
         logger.info('Stored: [%s] %s = %.2f %s [%s]',
-            reading['sensor_id'],
-            reading['sensor_type'],
-            reading['value'],
-            reading['unit'],
-            status
-        )
+                    reading['sensor_id'],
+                    reading['sensor_type'],
+                    reading['value'],
+                    reading['unit'],
+                    status)
+
 
 if __name__ == '__main__':
     main()
