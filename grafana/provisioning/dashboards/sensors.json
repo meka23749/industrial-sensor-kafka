@@ -1,0 +1,60 @@
+{
+  "title": "Industrial Sensor Dashboard",
+  "refresh": "5s",
+  "panels": [
+    {
+      "id": 1,
+      "title": "Temperature (C)",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+      "targets": [
+        {
+          "datasource": "PostgreSQL",
+          "rawSql": "SELECT timestamp AS time, value FROM sensor_readings WHERE sensor_type = 'temperature' ORDER BY timestamp",
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Vibration (mm/s)",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+      "targets": [
+        {
+          "datasource": "PostgreSQL",
+          "rawSql": "SELECT timestamp AS time, value FROM sensor_readings WHERE sensor_type = 'vibration' ORDER BY timestamp",
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Pressure (bar)",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+      "targets": [
+        {
+          "datasource": "PostgreSQL",
+          "rawSql": "SELECT timestamp AS time, value FROM sensor_readings WHERE sensor_type = 'pressure' ORDER BY timestamp",
+          "format": "time_series"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Anomalies detected",
+      "type": "stat",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+      "targets": [
+        {
+          "datasource": "PostgreSQL",
+          "rawSql": "SELECT COUNT(*) FROM sensor_readings WHERE anomaly = true",
+          "format": "table"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 36,
+  "version": 1
+}
